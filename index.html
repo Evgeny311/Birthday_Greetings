@@ -250,6 +250,65 @@
     <span class="line2">РОЖДЕНИЯ</span>
     <span class="line3">ЭРИК!</span>
   </div>
+<audio id="birthdayMusic">
+  <source src="guitarSong.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+const music = document.getElementById("birthdayMusic");
+
+const fadeInTime = 3000;     // 3 секунды появления
+const fadeOutTime = 5000;    // 5 секунд затухания
+const pauseTime = 60000;     // 1 минута паузы
+
+function fadeIn() {
+    music.volume = 0;
+    music.play();
+
+    let step = 0.05;
+    let interval = fadeInTime / (1 / step);
+
+    let fade = setInterval(() => {
+        if (music.volume < 1) {
+            music.volume = Math.min(1, music.volume + step);
+        } else {
+            clearInterval(fade);
+        }
+    }, interval);
+}
+
+function fadeOut(callback) {
+    let step = 0.05;
+    let interval = fadeOutTime / (1 / step);
+
+    let fade = setInterval(() => {
+        if (music.volume > 0) {
+            music.volume = Math.max(0, music.volume - step);
+        } else {
+            clearInterval(fade);
+            music.pause();
+            callback();
+        }
+    }, interval);
+}
+
+function playBirthday() {
+    music.currentTime = 0;
+    fadeIn();
+}
+
+// Когда музыка почти закончилась — плавно гасим
+music.addEventListener("timeupdate", () => {
+    if (music.duration - music.currentTime <= fadeOutTime / 1000) {
+        fadeOut(() => {
+            setTimeout(playBirthday, pauseTime);
+        });
+    }
+});
+
+// Первый запуск
+playBirthday();
+</script>
 
   <!-- Steve pixel face -->
   <div class="steve-wrap">
