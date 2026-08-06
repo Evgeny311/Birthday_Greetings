@@ -307,7 +307,10 @@ music.addEventListener("timeupdate", () => {
 });
 
 // Первый запуск
-playBirthday();
+document.addEventListener('click', function startMusic() {
+    playBirthday();
+    document.removeEventListener('click', startMusic);
+});
 </script>
 
   <!-- Steve pixel face -->
